@@ -1,0 +1,135 @@
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef long long int64;
+typedef unsigned long long uint64;
+#define two(X) (1<<(X))
+#define twoL(X) (((int64)(1))<<(X))
+#define contain(S,X) (((S)&two(X))!=0)
+#define containL(S,X) (((S)&twoL(X))!=0)
+const double pi=acos(-1.0);
+const double eps=1e-11;
+template<class T> inline void ckmin(T &a,T b){if(b<a) a=b;}
+template<class T> inline void ckmax(T &a,T b){if(b>a) a=b;}
+template<class T> inline T sqr(T x){return x*x;}
+typedef pair<int,int> ipair;
+#define SIZE(A) ((int)A.size())
+#define LENGTH(A) ((int)A.length())
+#define MP(A,B) make_pair(A,B)
+#define PB(X) push_back(X)
+#define FOR(i,a,b) for(int i=(a);i<(b);++i)
+#define REP(i,a) for(int i=0;i<(a);++i)
+#define ALL(A) A.begin(),A.end()
+using VI=vector<int>;
+
+const int64 L=100000LL*100000LL;
+
+VI sg(128);
+int64 query(int64 n)
+{
+	//fprintf(stderr,"query %lld\n",n);
+	printf("%lld\n",n);
+	fflush(stdout);
+	int64 p;
+	cin>>p;
+	return p;
+}
+int compute_sg(const pair<int64,int64>& a)
+{
+	return sg[(a.second-a.first+1)/L];
+}
+int compute_sg(const vector<pair<int64,int64>>& a)
+{
+	int s=0;
+	for (auto w:a) s^=compute_sg(w);
+	return s;
+}
+int main()
+{
+	int testcase,to_win;
+	cin>>testcase>>to_win;
+	FOR(i,1,128)
+	{
+		set<int> s;
+		for (int k=1;k<=2;k++) for (int j=0;j<=i-k;j++) s.insert(sg[j]^sg[i-k-j]);
+		for (sg[i]=0;s.count(sg[i]);++sg[i]);
+	}
+	for (int case_id=1;case_id<=testcase;case_id++)
+	{
+		int64 w0;
+		cin>>w0;
+		vector<pair<int64,int64>> a;
+		a.push_back(MP(1,w0-1));
+		a.push_back(MP(w0+L,L*100));
+		while (1)
+		{
+			int current_sg=compute_sg(a);
+			int64 p=-1;
+			REP(i,SIZE(a))
+			{
+				if (current_sg==0) continue;
+				if (p>=0) break;
+				auto key=a[i];
+				int l=(key.second-key.first+1)/L;
+				if (l==0) continue;
+				for (int k=1;k<=2;k++) for (int d=0;d<=l-k;d++)
+				{
+					if (p>=0) break;
+					int new_sg=current_sg^compute_sg(a[i]);
+					new_sg^=sg[d]^sg[l-k-d];
+					if (new_sg==0)
+					{
+						if (k==1)
+						{
+							p=key.first+d*L;
+							a[i]=MP(key.first,p-1);
+							a.push_back(MP(p+L,key.second));
+						}
+						else
+						{
+							int64 md=(key.second-key.first+1)%L;
+							md=(md+L)/2;
+							p=key.first+d*L+md;
+							a[i]=MP(key.first,p-1);
+							a.push_back(MP(p+L,key.second));
+						}
+						break;
+					}
+				}
+			}
+			if (p<0)
+			{
+				// fprintf(stderr,"Really?\n");
+				REP(i,SIZE(a))
+				{
+					if (p>=0) break;
+					auto key=a[i];
+					int l=(key.second-key.first+1)/L;
+					if (l==0) continue;
+					p=a[i].first;
+					a[i].first+=L;
+					break;
+				}
+			}
+			int64 w=query(p);
+			if (w==-1) exit(0);
+			if (w<0) break;
+			REP(i,SIZE(a))
+			{
+				auto key=a[i];
+				if (w>=key.first && w<=key.second)
+				{
+					a[i]=MP(key.first,w-1);
+					a.push_back(MP(w+L,key.second));
+				}
+			}
+		}
+	}
+	return 0;
+}
+

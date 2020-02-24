@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://lukakalinovcic.github.io/geodeb/main.js"></script>
+</head>
+<body>
+  <div id="rootElement"></div>
+</body>
+<script type="text/javascript">
+resourcePath = 'https://lukakalinovcic.github.io/geodeb/';
+jsonData = 
+{
+  "source_code": [
+    "#include <bits/stdc++.h>\u000a",
+    "#include \u0022geodeb.h\u0022\u000a",
+    "\u000a",
+    "#define ld long double\u000a",
+    "#define sf scanf\u000a",
+    "#define pf printf\u000a",
+    "#define pb push_back\u000a",
+    "#define PI ( acos(-1.0) )\u000a",
+    "#define IN freopen(\u0022input.txt\u0022,\u0022r\u0022,stdin)\u000a",
+    "#define OUT freopen(\u0022output.txt\u0022,\u0022w\u0022,stdout)\u000a",
+    "#define FOR(i,a,b) for(int i=a ; i<=b ; i++)\u000a",
+    "#define FORD(i,a,b) for(int i=a ; i>=b ; i--)\u000a",
+    "#define INF 1000000000\u000a",
+    "#define ll long long int\u000a",
+    "#define eps (1e-8)\u000a",
+    "#define sq(x) ( (x)*(x) )\u000a",
+    "#define all(x) x.begin(),x.end()\u000a",
+    "#define flog2(n) 64 - __builtin_clzll(n) - 1\u000a",
+    "#define popcnt(n) __builtin_popcountll(n)\u000a",
+    "\u000a",
+    "using namespace std;\u000a",
+    "\u000a",
+    "typedef pair < int, int > pii;\u000a",
+    "typedef pair < ll, ll > pll;\u000a",
+    "\u000a",
+    "\u000a",
+    "\u000a",
+    "int main()\u000a",
+    "{IN;\u000a",
+    "    ios::sync_with_stdio(0);\u000a",
+    "    cin.tie(NULL);\u000a",
+    "    GD_INIT(\u0022geo.html\u0022);\u000a",
+    "    int n, q;\u000a",
+    "    cin >> n >> q;\u000a",
+    "    FOR (i, 1, n) {\u000a",
+    "        int x, y, r;\u000a",
+    "        cin >> x >> y >> r;\u000a",
+    "        GD_CIRCLE(x, y, r, \u0022green\u0022);\u000a",
+    "    }\u000a",
+    "\u000a",
+    "    FOR (i, 1, q) {\u000a",
+    "        int x, y, r;\u000a",
+    "        cin >> x >> y >> r;\u000a",
+    "        GD_CIRCLE(x, y, r, \u0022red\u0022);\u000a",
+    "    }\u000a",
+    "\u000a",
+    "\u000a",
+    "    return 0;\u000a",
+    "}"
+  ],
+  "root": {
+    "type": "begin",
+    "line": 32,
+    "children": [
+      {
+        "type": "circ",
+        "line": 38,
+        "x": 67.000000,
+        "y": -91.000000,
+        "r": 3.000000,
+        "attr": "green"
+      },
+      {
+        "type": "circ",
+        "line": 38,
+        "x": -22.000000,
+        "y": -97.000000,
+        "r": 4.000000,
+        "attr": "green"
+      },
+      {
+        "type": "circ",
+        "line": 38,
+        "x": 55.000000,
+        "y": -12.000000,
+        "r": 18.000000,
+        "attr": "green"
+      },
+      {
+        "type": "circ",
+        "line": 38,
+        "x": -55.000000,
+        "y": 46.000000,
+        "r": 67.000000,
+        "attr": "green"
+      },
+      {
+        "type": "circ",
+        "line": 38,
+        "x": -2.000000,
+        "y": -24.000000,
+        "r": 20.000000,
+        "attr": "green"
+      },
+      {
+        "type": "circ",
+        "line": 38,
+        "x": 50.000000,
+        "y": -63.000000,
+        "r": 23.000000,
+        "attr": "green"
+      },
+      {
+        "type": "circ",
+        "line": 38,
+        "x": -37.000000,
+        "y": 93.000000,
+        "r": 15.000000,
+        "attr": "green"
+      },
+      {
+        "type": "circ",
+        "line": 44,
+        "x": -49.000000,
+        "y": -93.000000,
+        "r": 32.000000,
+        "attr": "red"
+      },
+      {
+        "type": "circ",
+        "line": 44,
+        "x": 81.000000,
+        "y": -13.000000,
+        "r": 3.000000,
+        "attr": "red"
+      },
+      {
+        "type": "circ",
+        "line": 44,
+        "x": 53.000000,
+        "y": -66.000000,
+        "r": 12.000000,
+        "attr": "red"
+      },
+      {
+        "type": "circ",
+        "line": 44,
+        "x": -64.000000,
+        "y": -40.000000,
+        "r": 5.000000,
+        "attr": "red"
+      },
+      {
+        "type": "circ",
+        "line": 44,
+        "x": 83.000000,
+        "y": 20.000000,
+        "r": 18.000000,
+        "attr": "red"
+      },
+      {
+        "type": "circ",
+        "line": 44,
+        "x": -49.000000,
+        "y": -1.000000,
+        "r": 10.000000,
+        "attr": "red"
+      },
+      {
+        "type": "circ",
+        "line": 44,
+        "x": 19.000000,
+        "y": -92.000000,
+        "r": 15.000000,
+        "attr": "red"
+      },
+      {
+        "type": "circ",
+        "line": 44,
+        "x": 14.000000,
+        "y": 84.000000,
+        "r": 5.000000,
+        "attr": "red"
+      },
+      {
+        "type": "circ",
+        "line": 44,
+        "x": 33.000000,
+        "y": 100.000000,
+        "r": 7.000000,
+        "attr": "red"
+      },
+      {
+        "type": "circ",
+        "line": 44,
+        "x": -45.000000,
+        "y": 90.000000,
+        "r": 1.000000,
+        "attr": "red"
+      },
+      {
+        "type": "circ",
+        "line": 44,
+        "x": -77.000000,
+        "y": -45.000000,
+        "r": 4.000000,
+        "attr": "red"
+      }
+    ]
+  },
+  "theme": "light"
+};
+init(resourcePath);
+</script>
+</html>

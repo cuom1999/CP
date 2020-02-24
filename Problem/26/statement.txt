@@ -1,0 +1,1 @@
+Given a m*n. Find how many rectangles? (1 <= m, n <= 2000)

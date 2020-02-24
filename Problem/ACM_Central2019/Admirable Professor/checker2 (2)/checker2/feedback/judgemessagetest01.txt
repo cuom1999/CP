@@ -1,0 +1,3 @@
+Wrong answer on line 6 of output (corresponding to line 5 in answer file)
+Your division does not give the result 0, it gives 1 
+

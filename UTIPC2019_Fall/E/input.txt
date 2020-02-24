@@ -1,0 +1,30 @@
+3 10 20
+1 a
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+26 abcdefghijklmnopqrstuvwxyz
+zzzzza
+dogs
+zzzzza

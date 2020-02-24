@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://lukakalinovcic.github.io/geodeb/main.js"></script>
+</head>
+<body>
+  <div id="rootElement"></div>
+</body>
+<script type="text/javascript">
+resourcePath = 'https://lukakalinovcic.github.io/geodeb/';
+jsonData = 
+{
+  "source_code": [
+    "#include <bits/stdc++.h>\u000a",
+    "#include \u0022geodeb.h\u0022\u000a",
+    "\u000a",
+    "#define ld long double\u000a",
+    "#define sf scanf\u000a",
+    "#define pf printf\u000a",
+    "#define pb push_back\u000a",
+    "#define PI ( acos(-1.0) )\u000a",
+    "#define IN freopen(\u0022input.txt\u0022,\u0022r\u0022,stdin)\u000a",
+    "#define OUT freopen(\u0022output1.txt\u0022,\u0022w\u0022,stdout)\u000a",
+    "#define FOR(i,a,b) for(int i=a ; i<=b ; i++)\u000a",
+    "#define FORD(i,a,b) for(int i=a ; i>=b ; i--)\u000a",
+    "#define INF 1000000000\u000a",
+    "#define ll long long int\u000a",
+    "#define eps (1e-8)\u000a",
+    "#define sq(x) ( (x)*(x) )\u000a",
+    "#define all(x) x.begin(),x.end()\u000a",
+    "#define flog2(n) 64 - __builtin_clzll(n) - 1\u000a",
+    "#define popcnt(n) __builtin_popcountll(n)\u000a",
+    "\u000a",
+    "using namespace std;\u000a",
+    "\u000a",
+    "typedef pair < int, int > pii;\u000a",
+    "typedef pair < ll, ll > pll;\u000a",
+    "\u000a",
+    "struct Point {\u000a",
+    "    int x, y;\u000a",
+    "};\u000a",
+    "\u000a",
+    "int dist(Point A, Point B) {\u000a",
+    "    return sq(A.x - B.x) + sq(A.y - B.y);\u000a",
+    "}\u000a",
+    "\u000a",
+    "int area(Point A, Point B, Point C) {\u000a",
+    "    B.x -= A.x;\u000a",
+    "    B.y -= A.y;\u000a",
+    "    C.x -= A.x;\u000a",
+    "    C.y -= A.y;\u000a",
+    "    return abs(B.x * C.y - B.y * C.x);\u000a",
+    "}\u000a",
+    "\u000a",
+    "bool inCircle(Point A, Point O, int r) {\u000a",
+    "    return dist(O, A) <= sq(r);\u000a",
+    "}\u000a",
+    "\u000a",
+    "bool inSquare(Point A, Point X, Point Y) {\u000a",
+    "    return (X.x <= A.x && A.x <= Y.x && X.y <= A.y && A.y <= Y.y);\u000a",
+    "}\u000a",
+    "\u000a",
+    "bool inTriangle(Point X, Point A, Point B, Point C) {\u000a",
+    "    return area(A, B, C) == area(X, A, B) + area(X, A, C) + area(X, B, C);\u000a",
+    "}\u000a",
+    "\u000a",
+    "void drawSquare(int x1, int y1, int x2, int y2) {\u000a",
+    "    if (x1 > x2) swap(x1, x2);\u000a",
+    "    if (y1 > y2) swap(y1, y2);\u000a",
+    "    \u000a",
+    "    GD_SEGMENT(x1, y1, x1, y2);\u000a",
+    "    GD_SEGMENT(x1, y1, x2, y1);\u000a",
+    "    GD_SEGMENT(x1, y2, x2, y2);\u000a",
+    "    GD_SEGMENT(x2, y1, x2, y2);\u000a",
+    "}\u000a",
+    "\u000a",
+    "void drawCircle(int x, int y, int r) {\u000a",
+    "    GD_CIRCLE(x, y, r);\u000a",
+    "}\u000a",
+    "\u000a",
+    "void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3) {\u000a",
+    "    GD_SEGMENT(x1, y1, x2, y2);\u000a",
+    "    GD_SEGMENT(x1, y1, x3, y3);\u000a",
+    "    GD_SEGMENT(x3, y3, x2, y2);\u000a",
+    "}\u000a",
+    "\u000a",
+    "int main()\u000a",
+    "{IN; OUT;\u000a",
+    "    ios::sync_with_stdio(0);\u000a",
+    "    cin.tie(NULL);\u000a",
+    "    GD_INIT(\u0022geo.html\u0022);\u000a",
+    "\u000a",
+    "    Point S1, S2;\u000a",
+    "    cin >> S1.x >> S1.y >> S2.x >> S2.y;\u000a",
+    "    if (S1.x > S2.x) swap(S1.x, S2.x);\u000a",
+    "    if (S1.y > S2.y) swap(S1.y, S2.y);\u000a",
+    "\u000a",
+    "    drawSquare(S1.x, S1.y, S2.x, S2.y);\u000a",
+    "\u000a",
+    "    // assert(S2.y - S1.y == S2.x - S1.x);\u000a",
+    "\u000a",
+    "    Point A, B, C;\u000a",
+    "    cin >> A.x >> A.y >> B.x >> B.y >> C.x >> C.y;\u000a",
+    "    assert(area(A, B, C) > 0);\u000a",
+    "\u000a",
+    "    drawTriangle(A.x, A.y, B.x, B.y, C.x, C.y);\u000a",
+    "\u000a",
+    "    Point O;\u000a",
+    "    int r;\u000a",
+    "    cin >> O.x >> O.y >> r;\u000a",
+    "    drawCircle(O.x, O.y, r);\u000a",
+    "\u000a",
+    "    int res = 0;\u000a",
+    "    FOR (x, -1000, 1000) {\u000a",
+    "        FOR (y, -1000, 1000) {\u000a",
+    "            Point Z = {x, y};\u000a",
+    "            if (inCircle(Z, O, r) || inSquare(Z, S1, S2) || inTriangle(Z, A, B, C)) {\u000a",
+    "                res++;\u000a",
+    "                cout << x << \u0022 \u0022 << y << endl;\u000a",
+    "            }\u000a",
+    "        }\u000a",
+    "    }\u000a",
+    "\u000a",
+    "    cout << res << endl;\u000a",
+    "\u000a",
+    "    return 0;\u000a",
+    "}"
+  ],
+  "root": {
+    "type": "begin",
+    "line": 78,
+    "children": [
+      {
+        "type": "segment",
+        "line": 58,
+        "x1": -3.000000,
+        "y1": 0.000000,
+        "x2": -3.000000,
+        "y2": 1.000000
+      },
+      {
+        "type": "segment",
+        "line": 59,
+        "x1": -3.000000,
+        "y1": 0.000000,
+        "x2": 1.000000,
+        "y2": 0.000000
+      },
+      {
+        "type": "segment",
+        "line": 60,
+        "x1": -3.000000,
+        "y1": 1.000000,
+        "x2": 1.000000,
+        "y2": 1.000000
+      },
+      {
+        "type": "segment",
+        "line": 61,
+        "x1": 1.000000,
+        "y1": 0.000000,
+        "x2": 1.000000,
+        "y2": 1.000000
+      },
+      {
+        "type": "segment",
+        "line": 69,
+        "x1": -1.000000,
+        "y1": 0.000000,
+        "x2": 2.000000,
+        "y2": 3.000000
+      },
+      {
+        "type": "segment",
+        "line": 70,
+        "x1": -1.000000,
+        "y1": 0.000000,
+        "x2": -2.000000,
+        "y2": -3.000000
+      },
+      {
+        "type": "segment",
+        "line": 71,
+        "x1": -2.000000,
+        "y1": -3.000000,
+        "x2": 2.000000,
+        "y2": 3.000000
+      },
+      {
+        "type": "circ",
+        "line": 65,
+        "x": 3.000000,
+        "y": 1.000000,
+        "r": 2.000000
+      }
+    ]
+  },
+  "theme": "light"
+};
+init(resourcePath);
+</script>
+</html>

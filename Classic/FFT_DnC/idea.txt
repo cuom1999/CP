@@ -1,0 +1,11 @@
+d[i] = sum (f[i - j] * coef[j])
+f depends on d: f = d, prefix sum, ....
+
+solve(l, r):
+1. solve(l, mid)
+2. now all d[l .. mid] are calculated
+3. use them to add to d[mid + 1 .. r]
+4. A = sum(d[l .. mid] * x^i)
+   B = sum(coef[1 .. r - l] * x^i)
+   C = A*B -> add C to d[mid + 1 .. r]
+5. solve(mid + 1, r)

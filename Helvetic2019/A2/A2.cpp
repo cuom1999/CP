@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+
+#define ld long double
+#define sf scanf
+#define pf printf
+#define pb push_back
+#define PI ( acos(-1.0) )
+#define IN freopen("input.txt","r",stdin)
+#define OUT freopen("output.txt","w",stdout)
+#define FOR(i,a,b) for(int i=a ; i<=b ; i++)
+#define FORD(i,a,b) for(int i=a ; i>=b ; i--)
+#define INF 1000000000
+#define ll long long int
+#define eps (1e-8)
+#define sq(x) ( (x)*(x) )
+#define all(x) x.begin(),x.end()
+#define flog2(n) 64 - __builtin_clzll(n) - 1
+#define popcnt(n) __builtin_popcountll(n)
+
+using namespace std;
+
+typedef pair < int, int > pii;
+typedef pair < ll, ll > pll;
+
+bool d[200005], dd[200005];
+
+string y;
+int n;
+
+void dfs(int u, int k, int &c) {
+	dd[u] = 1;
+	c ^= (y[u] - '0');
+	int v = (u + k) % n;
+	if (!dd[v]) {
+		dfs(v, k, c);
+	}
+}
+
+int main()
+{IN;
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);
+
+	cin >> n;
+	cin >> y;
+
+	int res = 0;
+
+	FOR (i, 0, n - 1) {
+		int u = __gcd(i, n);
+		if (u == n) u = 0;
+		if (u == i) {
+			d[i] = 1;
+			FOR (j, 0, n - 1) {
+				if (!dd[j]) {
+					int c = 0;
+					dfs(j, i, c);
+					// cout << i << " " << j << " " << c << endl;
+					if (c) {
+						d[i] = 0;
+						break;
+					}
+				}
+			}
+			memset(dd, 0, sizeof(dd));
+		}
+		// cout << d[u] << endl;
+		res += d[u];
+	}
+
+	cout << res << endl;
+
+
+	return 0;
+}

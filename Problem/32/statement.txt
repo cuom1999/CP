@@ -1,0 +1,4 @@
++Given n, k = 1e5, a1->an. Find (a_1)^i + (a_2)^i + ... + (a_n)^i
+
+Sol: ln(1 - ax) = -sum(a^i / i * x^i)
+calculate ln(prod(1 - a_i*x)) by FFT

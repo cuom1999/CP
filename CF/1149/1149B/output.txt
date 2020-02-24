@@ -1,0 +1,16 @@
+a   
+YES
+a a  
+YES
+a a a 
+YES
+ab a a 
+YES
+ab ab a 
+YES
+ab ab ab 
+NO
+a ab ab 
+NO
+a abz ab 
+NO

@@ -1,0 +1,6 @@
+Case #1: 178
+Case #2: 62
+Case #3: 82
+Case #4: 178
+Case #5: 62
+Case #6: 82

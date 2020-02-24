@@ -1,0 +1,10 @@
+Given a[1], a[2],..., a[n]. For every k-size subset, calculate max*min. Find the sum over all subsets.
+
+(2 <= k <= n <= 100000)
+
+Sol: Using FFT for
+f(x) = a[i] * x^i
+g(x) = a[i] * x^(-i)
+h(x) = combi(i, k - 2) * x^i
+
+res = [x^-1] of f*g*h

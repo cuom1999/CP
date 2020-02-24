@@ -1,0 +1,22 @@
+4
+5
+E E
+E N
+E E
+E E
+E N
+3
+N E
+N E
+E N
+6
+E N
+E N
+E N
+E N
+E N
+E N
+3
+N N 
+N N 
+E E  

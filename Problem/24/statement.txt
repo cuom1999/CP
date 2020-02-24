@@ -1,0 +1,7 @@
+Polynomial Chain Multiplication:
+
+Regular PolyMul: deg_a * deg_b -> (a+1)(b+1) operations
+
+Given a chain of Poly with deg a_i. Find the minimum operations to multiply them.
+
+Sol: Take two smallest degrees and ...

@@ -1,0 +1,3 @@
+Given a board m*n consisting of '.' and '#'. 
+
+Find how many square '.' of size k for all k = 1, ..., min(m,n)

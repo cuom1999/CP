@@ -1,0 +1,12 @@
+00
+pre: 
+post: 
+01
+pre: 
+post: 1 
+10
+pre: 1 
+post: 2 
+11
+pre: 1 2 
+post: 1 

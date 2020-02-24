@@ -1,0 +1,4 @@
+Find a subset that has sum = S
+
+n <= 5000
+S <= 1e6

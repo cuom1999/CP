@@ -1,0 +1,5 @@
+Given a[1], a[2], ..., a[n]. Partition into k segment such that sum of LIS 
+of all segments is maximized. (k <= n <= 100000)
+
+Solution: 
+ALIEN Trick
