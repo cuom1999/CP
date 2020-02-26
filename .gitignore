@@ -10,3 +10,7 @@
 !*.png
 !*.docx
 !*.txt
+!*.pas
+!*.html
+!*.cfg
+!*.csv
