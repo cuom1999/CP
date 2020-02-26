@@ -33,7 +33,7 @@ int calc(int n) {
 }
 
 int main()
-{IN;
+{
     ios::sync_with_stdio(0);
     cin.tie(NULL);
 
