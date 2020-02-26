@@ -1,1 +1,12 @@
-*.exe
+*
+!*.cpp
+!*.h
+!*.py
+!*.java
+!*.in
+!*.inp
+!*.out
+!*.ans
+!*.png
+!*.docx
+!*.txt
