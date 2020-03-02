@@ -2,7 +2,7 @@
 
 void genOutput(int numTest) {
     compile();
-    FOR (i, 1, 30) {
+    FOR (i, 1, numTest) {
         genOut(i);
     }
 }
