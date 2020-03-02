@@ -36,11 +36,11 @@ long long Rand(long long l, long long r) {
 }
 
 ofstream inpFile(int test) {
-    return ofstream(FOLDER + "\\" + NAME + numToStr(test) + "." + SUFFIX_IN);
+    return ofstream(FOLDER + "/" + NAME + numToStr(test) + "." + SUFFIX_IN);
 }
 
 void delAllFiles() {
-    system("del /f /s /q Data\\*");
+    system("del /f /s /q Data/*");
 }
 
 void compile() {
@@ -50,12 +50,12 @@ void compile() {
 }
 
 string inpName(int test) {
-    return FOLDER + "\\" + NAME 
+    return FOLDER + "/" + NAME 
            + numToStr(test) + "." + SUFFIX_IN;
 }
 
 string outName(int test) {
-    return FOLDER + "\\" + NAME 
+    return FOLDER + "/" + NAME 
            + numToStr(test) + "." + SUFFIX_OUT;
 }
 

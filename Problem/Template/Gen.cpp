@@ -27,7 +27,7 @@ int main()
     cin.tie(NULL);
 
     // genOutput(30);    
-    validate(30);
+    // validate(30);
     
     return 0;
 }

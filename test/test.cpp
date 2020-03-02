@@ -22,21 +22,12 @@ using namespace std;
 typedef pair < int, int > pii;
 typedef pair < ll, ll > pll;
 
-int calc(int n) {
-    ll res = 0;
-    FOR (k, 1, n) {
-        FOR (s, 1, n / k) {
-            res += n - k * s;
-        }
-    }
-    return res;
-}
-
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(NULL);
+    // system("md Data");
+    system("echo Hi >Data/output.txt");
 
-    FOR (i, 1, 10) cout << calc(i) << ", ";
     return 0;
 }
