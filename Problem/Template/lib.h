@@ -71,7 +71,8 @@ void compileChecker() {
 }
 
 void compileBrute() {
-    string cmd = "g++ " + BRUTE_NAME + ".cpp -o " + BRUTE_NAME; 
+    string cmd = "g++ -std=c++14 -Wl,--stack=268435456 -O2 "
+                + BRUTE_NAME + ".cpp" + " -o " + BRUTE_NAME;
     system(cmd.c_str());
 }   
 
