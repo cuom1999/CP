@@ -20,70 +20,113 @@
 using namespace std;
 
 typedef pair < int, int > pii;
-typedef pair < int, ll > II;
+typedef pair < ll, ll > II;
 
-int n, g, k;
-ll a[100005], s[100005], s2[100005];
+ll a[300005], s[300005], s2[300005];
+int type;
 
-ll cost(int x, int y) {
-	if (k == 1) {
-		int m = (x + y) / 2;
-		return (m - x + 1 - y + m) * a[m] - (s[m] - s[x - 1] - s[y] + s[m]);
-	}
-	else {
-		ll u = (s[y] - s[x - 1]) / (y - x + 1);
-		auto f = [&](ll u) {
-			return (y - x + 1) * u * u - 2 * (s[y] - s[x - 1]) * u + s2[y] - s2[x - 1];
-		};
-		return min(f(u), f(u + 1));
-	}
-}
+// https://sites.google.com/site/ubcprogrammingteam/news/1d1ddynamicprogrammingoptimization-parti
+// use when opt[i] <= opt[j], i <= j
+struct Opt1D {
+    int n;
+    ll c;
+    vector<ll> dp, numGroup;
 
-ll d[100005];
-int cnt[100005];
-// each segment is increased x
-II solve(ll x) {
-	FOR (i, 1, n) {
-		d[i] = 1e18;
-		int opt = -1;
-			
-		FOR (j, 0, i - 1) {
-			ll val = d[j] + cost(j + 1, i) + x;
+    Opt1D(int n, ll c): n(n), c(c) {
+        dp.resize(n + 1);
+        numGroup.resize(n + 1);
+    }
 
-			if (val < d[i]) {
-				d[i] = val;
-				opt  = j;
-			}			
-		}
-		cnt[i] = cnt[opt] + 1;
-	}
-	return {cnt[n], d[n]};
+    ll cost(int l, int r) { // i -> j
+        if (type == 1) {
+            int mid = (l + r) / 2;
+            if ((l + r) % 2 == 0) {
+                return s[r] + s[l] - 2 * s[mid] + c;
+            }
+            return s[r] + s[l] - s[mid] - s[mid + 1] + c;
+        }
+        else {
+            if (l == r) return c;
+
+            ll u = (s[r] - s[l]) / (r - l);
+            auto f = [&](ll u) {
+                return (r - l) * u * u - 2 * (s[r] - s[l]) * u + s2[r] - s2[l];
+            };
+            return min(f(u), f(u + 1)) + c;
+        }
+    }
+
+    void solve() {
+        vector<pair<int, int> > opt; // start pos, best-k
+        opt.push_back(make_pair(0, 0)); // maybe (0, 0) if start at 0
+        dp[0] = 0;
+
+        for (int x = 1; x <= n; x++) {
+            // Find the value of dp[x]
+            int k = (--lower_bound(opt.begin(), opt.end(), make_pair(x + 1, 0)))->second;
+            dp[x] = dp[k] + cost(k, x);
+            numGroup[x] = numGroup[k] + 1;
+            // cout << x << " " << k << " " << cost(k, x) << endl;
+
+            // Update the segments
+            for (int i = opt.size() - 1; i >= 0; i--) {
+                int y = opt[i].first, oldk = opt[i].second;
+                // Case 1
+                if (y > x && dp[x] + cost(x, y) <= dp[oldk] + cost(oldk, y))
+                    opt.pop_back();
+                // Case 2
+                else {
+                    int lo = y + 1, hi = n + 1;
+                    while(lo < hi) {
+                        int mid = (lo + hi) / 2;
+                        if (dp[x] + cost(x, mid) <= dp[oldk] + cost(oldk, mid))
+                            hi = mid;
+                        else
+                            lo = mid + 1;
+                    }
+                    if (hi != n + 1) opt.push_back(make_pair(hi, x));
+                    break;
+                }
+            }
+            if (opt.size() == 0)
+                opt.push_back(make_pair(0, x)); // maybe (0, x) if start at 0
+        }
+    }
+};
+
+II solve(int n, ll cost) {
+    Opt1D solver(n, cost);
+    solver.solve();
+    return {solver.dp[n], solver.numGroup[n]};
 }
 
 int main()
 {IN;
-	ios::sync_with_stdio(0);
-	cin.tie(NULL);	
+    ios::sync_with_stdio(0);
+    cin.tie(NULL);
+    int n, k;
+    cin >> n >> k >> type;
 
-	cin >> n >> g >> k;
+    FOR (i, 1, n) {
+        cin >> a[i];
+        s[i] = s[i - 1] + a[i];
+        s2[i] = s2[i - 1] + sq(a[i]);
+    }
 
-	FOR (i, 1, n) {
-		cin >> a[i];
-		s[i] = s[i - 1] + a[i];
-		s2[i] = s2[i - 1] + a[i] * a[i];
-	}
+    ll lower = 0, upper = 1e14;
+    while (lower < upper) {
+        ll mid = (lower + upper + 1) / 2;
+        auto u = solve(n, mid);
+        if (u.second >= k) {
+            lower = mid;
+        }
+        else {
+            upper = mid - 1;
+        }
+    }
 
-	ll L = 0, R = 1e13;
-	while (L < R) {
-		ll mid = (L + R) / 2;
-		if (solve(mid).first <= g) {	
-			R = mid;
-		}
-		else {
-			L = mid + 1;
-		}
-	}
+    auto u = solve(n, lower);
+    cout << u.first - k * lower << endl;
 
-	cout << solve(L).second - g * L << endl;
-	return 0;
+    return 0;
 }

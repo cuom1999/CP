@@ -57,7 +57,7 @@ void dfs(int a) {
 }
 
 int main()
-{IN; OUT;
+{IN; //OUT;
     ios::sync_with_stdio(0);
     cin.tie(NULL);
     cin >> n >> q;
@@ -79,7 +79,15 @@ int main()
         sweepline.pb({circle[i].x + circle[i].r, -i});
     }
 
-    sort(all(sweepline));
+    sort(all(sweepline), [&](II a, II b) {
+        if (a.first == b.first) {
+            if (a.second * 1ll * b.second < 0) {
+                return a.second < b.second;
+            }
+            return circle[abs(a.second)].y > circle[abs(b.second)].y;
+        }
+        return a.first < b.first;
+    });
 
     rope<int> lowerHalf, upperHalf;
 
@@ -178,6 +186,7 @@ int main()
             upperHalf.insert(lower, index);
 
             if (firstCircle != -1) {
+                // cout << index << " " << firstCircle << " " << isLower << " L" << endl;
                 if (isLower) {
                     p[index] = firstCircle;
                 }
