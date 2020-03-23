@@ -1,5 +1,3 @@
-*
-!Template/*.h
 !*.cpp
 !*.h
 !*.py
