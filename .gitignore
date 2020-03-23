@@ -14,6 +14,7 @@
 !*.html
 !*.cfg
 !*.csv
-!*.inp
-!*.out
-!*.txt
+!*.h
+*.inp
+*.out
+*.txt
