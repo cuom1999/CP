@@ -1,50 +1,36 @@
-const int N=100005;
+struct SCC {
+    vector<vector<int>> adj, scc;
+    vector<int> num, low, stack, vs;
+    int time, n;
+    
+    SCC(int n, vector<vector<int>> adj): n(n), adj(adj) {
+        num.resize(n + 1);
+        low.resize(n + 1);
+        vs.resize(n + 1);
+        time = 0;
 
-vector<int> v[N];
-
-int num[N],low[N],vs[N];
-int TIME,res;
-vector<int> SCC[100005], STACK;
-
-void dfs(int a){
-    low[a]=num[a]=++TIME;
-    STACK.pb(a);
-    for (auto i:v[a]){
-        if (!num[i]) dfs(i);
-        if (!vs[i]) low[a]=min(low[a],low[i]);
-    }
-
-    if (num[a]==low[a]) {
-        res++;
-        while (STACK.size()){
-            int b=STACK.back(); SCC[res].pb(b);
-            STACK.pop_back();
-            vs[b]=1;
-            if (b==a) break;
+        for (int i = 1; i <= n; i++) {
+            if (!num[i]) dfs(i);
         }
     }
-}
 
-int main()
-{IN;
-    ios::sync_with_stdio(0);
-    cin.tie(NULL);
-    int n,m;
-    sf("%d %d",&n,&m);
-    FOR (i,1,m){
-        int x,y;
-        sf("%d%d",&x,&y);
-        v[x].pb(y);
+    void dfs(int a) {
+        low[a] = num[a] = ++time;
+        stack.push_back(a);
+        for (auto i: adj[a]) {
+            if (!num[i]) dfs(i);
+            if (!vs[i]) low[a] = min(low[a], low[i]);
+        }
+        if (num[a] == low[a]) {
+            vector<int> curSCC;
+            while (stack.size()) {
+                int b = stack.back();
+                curSCC.push_back(b);
+                stack.pop_back();
+                vs[b] = 1;
+                if (b == a) break;
+            }
+            scc.push_back(curSCC);
+        }
     }
-    FOR(i,1,n){
-        if (!num[i]) dfs(i);
-    }
-    //cout<<res<<endl;
-    pf("%d",res);
-    /*FOR (i,1,res){
-        cout<<i<<" : ";
-        for (auto j:SCC[i]) cout<<j<<" "; cout<<endl;
-    }*/
-
-    return 0;
-}
+};

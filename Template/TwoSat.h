@@ -8,15 +8,17 @@ struct TwoSat {
     vector<int> * a; //
     int *color, *num, *low; // color 1=False, 2=True
     stack<int> st;
-    bool Invalid = false;
+    bool invalid = false;
 
     #define SetLength2(a, n, t) a=((t*) calloc(n, sizeof(t))) + (n)/2
 
-    bool minimize(int &a, int b){
-        if (a>b) a=b; else return false; return true;
+    bool minimize(int &a, int b) {
+        if (a>b) a = b; 
+        else return false; 
+        return true;
     }
 
-    void init(int n){
+    TwoSat(int n) {
         numVer = n;
         SetLength2(a, n*2+5, vector<int>);
         SetLength2(color, n*2+5, int);
@@ -25,8 +27,8 @@ struct TwoSat {
     }
 
     void set_color(int u, int x){
-        if (color[u]==(x^3)) Invalid=true; else color[u]=x;
-        if (color[-u]==x) Invalid=true; else color[-u]=(x^3);
+        if (color[u]==(x^3)) invalid=true; else color[u]=x;
+        if (color[-u]==x) invalid=true; else color[-u]=(x^3);
     }
 
     void tarzan(int u){
@@ -55,15 +57,15 @@ struct TwoSat {
     }
 
     bool solve() {
-        FOR (i, 1, numVer) {
-            a[i].pb(0);
-            a[-i].pb(0);
+        for (int i = 1; i <= numVer; i++) {
+            a[i].push_back(0);
+            a[-i].push_back(0);
         }
 
-        FOR (i, 1, numVer) {
+        for (int i = 1; i <= numVer; i++) {
             if (!num[i]) tarzan(i);
             if (!num[-i]) tarzan(-i);
         }
-        return !Invalid;
+        return !invalid;
     }
-} ts;
+};

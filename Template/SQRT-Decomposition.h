@@ -1,89 +1,45 @@
-int n, BLOCK_SIZE;
-int a[30005];
 
-vector<int> block[1000];
+struct SQRTDecomposition {
+    int n, BLOCK_SIZE;
+    vector<int> a;
+    vector<vector<int>> block;
 
-void build() {
-	FOR (i, 1, n) {
-		block[(i - 1) / BLOCK_SIZE].pb(a[i]);
-	}
-	FOR (i, 0, (n - 1) / BLOCK_SIZE) {
-		sort(all(block[i]));
-	}
-}
+    SQRTDecomposition(int n, vector<int> a): n(n), a(a) {
+        BLOCK_SIZE = sqrt(n) + 1; // ?
+        block.resize(n / BLOCK_SIZE + 1);
+        build();
+    }
 
-void update(int i, int v) {
-	int blockPos = (i - 1) / BLOCK_SIZE;
+    void build() {
+        for (int i = 1; i <= n; i++) {
+            block[(i - 1) / BLOCK_SIZE].pb(a[i]);
+        }
+    }
 
-	for (auto j = block[blockPos].begin(); j != block[blockPos].end(); j++) {
-		if (*j == a[i]) {
-			block[blockPos].erase(j);
-			break;
-		}
-	}
+    void update(int i, int v) {
+    }
 
-	int newPos = lower_bound(all(block[blockPos]), v) - block[blockPos].begin();
-	block[blockPos].insert(block[blockPos].begin() + newPos, v);
-	a[i] = v;
-}
+    int getAns(int l, int r, int k) {
+        int firstBlock = (l - 1) / BLOCK_SIZE;
+        int lastBlock = (r - 1) / BLOCK_SIZE;
 
-int getAns(int i, int j, int k) {
-	int firstBlock = (i - 1) / BLOCK_SIZE;
-	int lastBlock = (j - 1) / BLOCK_SIZE;
-
-	int res = 0;
-	if (firstBlock == lastBlock) {
-		FOR (u, i, j) {
-			if (a[u] > k) res++;
-		}
-		return res;
-	}
-	else {
-		FOR (u, firstBlock + 1, lastBlock - 1) {
-			res += block[u].end() - upper_bound(all(block[u]), k);
-		}
-		FOR (u, i, (firstBlock + 1) * BLOCK_SIZE) {
-			if (a[u] > k) res++;
-		}
-		FOR (u, lastBlock * BLOCK_SIZE + 1, j) {
-			if (a[u] > k) res++;
-		}
-		return res;
-	}
-}
-
-int main()
-{IN;
-	ios::sync_with_stdio(0);
-	cin.tie(NULL);
-
-	scanf("%d", &n);
-	BLOCK_SIZE = sqrt(log2(200000)) * sqrt(n);
-	FOR (i, 1, n) {
-		scanf("%d", &a[i]);
-	}
-
-	build();
-
-	int q;
-	scanf("%d", &q);
-
-	FOR (z, 1, q) {
-		int type;
-		scanf("%d", &type);
-
-		if (type == 0) {
-			int i, v;
-			scanf("%d%d", &i, &v);
-			update(i, v);
-		}
-		else {
-			int i, j, k;
-			scanf("%d%d%d", &i, &j, &k);
-			printf("%d\n", getAns(i, j, k));
-		}
-	}
-
-
-	return 0;
-}
+        int res = 0;
+        if (firstBlock == lastBlock) {
+            for (int i = l; i <= r; i++) {
+                if (a[i] > k) res++;
+            }
+        }
+        else {
+            for (int i = firstBlock + 1; i <= lastBlock - 1; i++) {
+                res += block[i].end() - upper_bound(all(block[i]), k);
+            }
+            for (int i = l; i <= (firstBlock + 1) * BLOCK_SIZE; i++) {
+                if (a[i] > k) res++;
+            }
+            for (int i = lastBlock * BLOCK_SIZE + 1; i <= r; i++) {
+                if (a[i] > k) res++;
+            }
+        }
+        return res;
+    }
+};

@@ -10,4 +10,4 @@ struct customHash {
     }
 };
 
-unordered_map<vector<int>, ll, customHash> d;
+unordered_map<vector<int>, long long, customHash> d;

@@ -1,11 +1,11 @@
 // use CHT as the example
-// rebuild after insert all necessary set before answer queries
+// rebuidouble after insert all necessary set before answer queries
 // note the pointers
 
 const int LG = 20;
 
 struct Point {
-	ll x, y;
+	long long x, y;
 	bool operator < (Point &a) {
 		if (x == a.x) return y < a.y;
 		return x < a.x;
@@ -13,38 +13,38 @@ struct Point {
 };
 
 struct CHT {
-	vector<Point> v;
+	vector<Point> pts;
 
-	ld cross (Point a, Point b) {return (ld)(b.y - a.y) / (b.x - a.x);}
+	double cross (Point a, Point b) {return (double)(b.y - a.y) / (b.x - a.x);}
 
-	void addLine(ll x, ll y) {
-		if (v.size() && v.back().x == x && v.back().y == y) return;
+	void addLine(long long x, long long y) {
+		if (pts.size() && pts.back().x == x && pts.back().y == y) return;
 
-		while(v.size() >= 2 && cross(v[v.size()-2], v.back()) > cross(v.back(), (Point){x, y})){
-			v.pop_back();	
+		while(pts.size() >= 2 && cross(pts[pts.size()-2], pts.back()) > cross(pts.back(), (Point){x, y})){
+			pts.pop_back();	
 		}
-		v.push_back({x, y});
+		pts.push_back({x, y});
 	}
 
-	ll query(ll x) {
-		int s = 0, e = v.size()-1;
+	long long query(long long x) {
+		int s = 0, e = pts.size()-1;
 		auto f = [&](int p) {
-			return v[p].x * x + v[p].y;
+			return pts[p].x * x + pts[p].y;
 		};
 
 		while(s != e){
 			int m = (s + e) / 2;
-			if(f(m) <= f(m+1)) e = m;
+			if(f(m) <= f(m + 1)) e = m;
 			else s = m + 1;
 		}
-		return v[s].x * x + v[s].y;
+		return pts[s].x * x + pts[s].y;
 	}
 };
 
 CHT merge(CHT &a, CHT &b) {
 	CHT res;
 	vector<Point> tmp;
-	merge(all(a.v), all(b.v), back_inserter(tmp));
+	merge(a.pts.begin(), a.pts.end(), b.pts.begin(), b.pts.end(), back_inserter(tmp));
 
 	for (auto i: tmp) {
 		res.addLine(i.x, i.y);
@@ -52,28 +52,29 @@ CHT merge(CHT &a, CHT &b) {
 	return res;
 }
 
+template <typename T>
 struct Container {
-	vector<CHT*> group[LG + 1];
+	vector<T*> group[LG + 1];
 
 	void insert(Container &c) {
-		FOR (i, 0, LG) {
+		for (int i = 0; i <= LG; i++) {
 			for (auto j: c.group[i]) {
-				group[i].pb(j);
+				group[i].push_back(j);
 			}
 		}
 	}
 
-	void rebuild() {
-		FOR (i, 0, LG) {
+	void rebuidouble() {
+		for (int i = 0; i <= LG; i++) {
 			for (int j = 0; j + 1 < group[i].size(); j += 2) {
-				CHT *tmp = new CHT();
+				T *tmp = new T();
 				*tmp = merge(*group[i][j], *group[i][j + 1]);
-				group[i + 1].pb(tmp);
+				group[i + 1].push_back(tmp);
 			}
 			if (group[i].size() % 2) {
 				auto tmp = group[i].back();
 				group[i].clear();
-				group[i].pb(tmp);
+				group[i].push_back(tmp);
 			}
 			else {
 				group[i].clear();
@@ -82,7 +83,7 @@ struct Container {
 	}
 
 	void print() {
-		FOR (i, 0, LG) {
+		for (int i = 0; i <= LG; i++) {
 			if (group[i].size()) {
 				cout << i << endl;
 				for (auto j: group[i][0]->v) {

@@ -10,23 +10,23 @@ struct Point {
 };
 
 struct CHT {
-    vector<Point> v;
+    vector<Point> pts;
 
     double cross (Point a, Point b) {return (double)(b.y - a.y) / (b.x - a.x);}
 
     void addLine(long long x, long long y) {
-        if (v.size() && v.back().x == x && v.back().y == y) return;
+        if (pts.size() && pts.back().x == x && pts.back().y == y) return;
 
-        while(v.size() >= 2 && cross(v[v.size()-2], v.back()) > cross(v.back(), (Point){x, y})){
-            v.pop_back();   
+        while(pts.size() >= 2 && cross(pts[pts.size()-2], pts.back()) > cross(pts.back(), (Point){x, y})){
+            pts.pop_back();   
         }
-        v.push_back({x, y});
+        pts.push_back({x, y});
     }
 
     long long query(long long x) {
-        int s = 0, e = (int) v.size()-1;
+        int s = 0, e = (int) pts.size()-1;
         auto f = [&](int p) {
-            return v[p].x * x + v[p].y;
+            return pts[p].x * x + pts[p].y;
         };
 
         while(s != e){
@@ -34,6 +34,6 @@ struct CHT {
             if(f(m) <= f(m + 1)) e = m;
             else s = m + 1;
         }
-        return v[s].x * x + v[s].y;
+        return pts[s].x * x + pts[s].y;
     }
 };
