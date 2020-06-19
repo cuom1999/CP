@@ -298,7 +298,8 @@ namespace Poly {
             G = ln(R, mod, n - 1);
             G.resize(n);
             for (int i = 0; i < n; i++) {
-                G[i] = (a[i] - G[i] + mod) % mod;
+                int val = i < a.size() ? a[i] : 0;
+                G[i] = (val - G[i] + mod) % mod;
             } 
             G[0]++;
             R = multiply(R, G, mod, n - 1);
