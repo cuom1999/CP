@@ -5,7 +5,7 @@ struct LCA {
     int n, logn, root = 1;
 
     LCA(int n, const vector<vector<int>>& adj): n(n), adj(adj) {
-        while ((1 << logn) <= n) logn <<= 1;
+        while ((1 << logn) <= n) logn++;
         p = vector<vector<int>>(n + 1, vector<int>(logn + 1));
         h = vector<int>(n + 1);
         dfs(1, 0);
