@@ -1,86 +1,23 @@
-#include <bits/stdc++.h>
-
-#define ld long double
-#define sf scanf
-#define pf printf
-#define pb push_back
-#define mp make_pair
-#define PI ( acos(-1.0) )
-#define pmod 1000000007
-#define maxn 100005
-#define IN freopen("input.txt","r",stdin)
-#define OUT freopen("output.txt","w",stdout)
-#define FOR(i,a,b) for(int i=a ; i<=b ; i++)
-#define FORD(i,a,b) for(int i=a ; i>=b ; i--)
-#define INF 1000000000
-#define ll long long int
-#define eps (1e-8)
-#define sq(x) ( (x)*(x) )
-
-using namespace std;
-
-typedef pair < int, int > pii;
-typedef pair < ll, ll > pll;
-
-ll mul (ll a, ll b,ll m){
-    if (b==1) return a%m;
-    if (b==0) return 1%m;
-    a%=m; b%=m;
-    ll q=mul(a,b/2,m);
-    if (b%2==0) return (q+q)%m;
-    else return (q+q+a)%m;
+long long modmul(long long a, long long b, long long n) {
+    return (__int128) a * b % n;
 }
 
-ll mu(ll a, ll n, ll m){
-    if (n==0) return 1%m;
-    ll q=mu(a,n/2,m);
-    if (n%2==0) return mul(q,q,m);
-    return mul(mul(q,q,m),a,m);
+long long pw(long long a, long long n, long long mod) {
+    if (n == 0) return 1;
+    long long q = pw(a, n / 2, mod);
+    if (n % 2 == 0) return modmul(q, q, mod);
+    return modmul(modmul(q, q, mod), a, mod);
 }
 
-bool checkprime (ll n){
-
-    if (n==2) return 1;
-    if (n%2==0|| n==1) return 0;
-    ll m=n-1;
-    ll s=0;
-    while (m%2==0){
-        m/=2;s++;
+bool isPrime(long long n) {
+    if (n < 2 || n % 6 % 4 != 1) return (n | 1) == 3;
+    long long A[] = {2, 325, 9375, 28178, 450775, 9780504, 1795265022},
+        s = __builtin_ctzll(n - 1), d = n >> s;
+    for (long long a : A) {   // ^ count trailing zeroes
+        long long p = pw(a%n, d, n), i = s;
+        while (p != 1 && p != n - 1 && a % n && i--)
+            p = modmul(p, p, n);
+        if (p != n-1 && i != s) return 0;
     }
-    ll dem=0,q=0,a,b;
-    while( dem<=3 ){
-        dem++;
-
-        a=rand()%(n-2)+2;
-
-        //cout<<a<<endl;
-        b=mu(a,m,n);
-        if ((b+1)%n==0 || (b-1)%n==0) {q++;continue;}
-        FOR (i,1,s){
-            b=mul(b,b,n);
-            //cout<<i<<" "<<b<<endl;
-            if ((b+1)%n==0) {q++; break;}
-        }
-        //cout<<a<<endl;
-    }
-    //cout<<q<<endl;
-    if (q==4) return 1;
-    return 0;
-
-}
-
-int main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(NULL);
-    srand(NULL);
-    //cout<<mul(12,10,100);
-    ll s=0;
-
-    //cout<<checkprime((ll) 1e9+7);
-    FOR (i,1e9, 1e9+100){
-        if (checkprime(i)) cout<<i<<endl;
-    }
-
-        return 0;
+    return 1;
 }
