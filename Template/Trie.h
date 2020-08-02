@@ -1,3 +1,4 @@
+// A and a
 struct Trie {
     int id;
     static const int ALPHABET_SIZE = 26;

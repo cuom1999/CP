@@ -16,6 +16,8 @@ struct BridgeArcPoint {
     void dfs(int u, int par) {
         int numChild = 0;
         low[u] = num[u] = ++time;
+
+        bool isCritical = false;
         for (auto i: adj[u]) {
             if (i == par) continue;
             if (num[i]) {
@@ -31,13 +33,14 @@ struct BridgeArcPoint {
                 }
 
                 if (u == 1) {
-                    if (numChild >= 2) criticalNodes.push_back(u);
+                    if (numChild >= 2) isCritical = true;
                 }
                 else {
-                    if (low[i] >= num[u]) criticalNodes.push_back(u);
+                    if (low[i] >= num[u]) isCritical = true;
                 }
             }
         }
+        if (isCritical) criticalNodes.push_back(u);
     }
 };
 
