@@ -37,3 +37,20 @@ struct CHT {
         return pts[s].x * x + pts[s].y;
     }
 };
+
+
+// int cur = 0;
+
+// long long query(long double x) {
+//     auto f = [&](int p) {
+//         return pts[p].x * x + pts[p].y;
+//     };
+
+//     if (cur >= pts.size()) cur = pts.size() - 1;
+
+//     while (cur + 1 < pts.size()){
+//         if (f(cur) > f(cur + 1)) cur++;
+//         else break;
+//     }
+//     return pts[cur].x * x + pts[cur].y;
+// }

@@ -5,6 +5,8 @@ struct ZAlgo {
     string s;
     ZAlgo(string s): s(s) {
         int n = s.length();
+        z.resize(n);
+        
         int x = 0, y = 0;
         for (int i = 1; i <= n - 1; i++) {
             z[i] = max(0, min(z[i - x], y - i + 1));
