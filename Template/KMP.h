@@ -5,6 +5,7 @@ struct KMP {
     // state i: longest proper prefix = i
     
     static const int MAXC = 26;
+    static const FIRST_CHAR = 'A';
     int n;
     string s;
     vector<int> prefix;
@@ -36,7 +37,7 @@ struct KMP {
     void calcNextState() {
         for (int i = 0; i <= n; i++) {
             for (int j = 0; j < MAXC; j++) {
-                char x = j + 'A';
+                char x = j + FIRST_CHAR;
 
                 if (i == n || (i &&  x != s[i])) {
                     nextState[i][j] = nextState[prefix[i - 1]][j];
