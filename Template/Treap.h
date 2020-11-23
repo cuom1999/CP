@@ -1,60 +1,110 @@
-namespace Treap {
-    struct Node {
-        Node *l = 0, *r = 0;
-        int val, y, c = 1;
-        Node(int val) : val(val), y(rand() * rand()) {}
-        void recalc();
-    };
 
-    int size(Node* n) { return n ? n->c : 0; }
-    void Node::recalc() { c = size(l) + size(r) + 1; }
+struct Treap {
+    int size, priority;
+    array<Treap*, 2> child;
+    long long value, max, lazy;
 
-    void print(Node* n) {
-        if (n) { print(n->l); cout << n->val << " "; print(n->r); }
+    Treap(int value): value(value) {
+        child = {NULL, NULL};
+        priority = rand() * rand() * rand();
+        size = 1; max = value; lazy = 0;
     }
+};
 
-    // split n into [0, k] and [k + 1, size(n) - 1]
-    pair<Node*, Node*> split(Node* n, int k) {
-        if (!n) return {};
-        if (size(n->l) >= k) { // "n->val >= k" for lower_bound(k)
-            auto pa = split(n->l, k);
-            n->l = pa.second;
-            n->recalc();
-            return {pa.first, n};
-        } else {
-            auto pa = split(n->r, k - size(n->l) - 1); // and just "k"
-            n->r = pa.first;
-            n->recalc();
-            return {n, pa.second};
+int size(Treap *x) {
+    if (x == NULL) return 0;
+    return x->size;
+}
+
+void down(Treap *root) {
+    if (root == NULL || !root->lazy) return;
+    for (auto child: root->child) {
+        if (child != NULL) {
+            child->lazy += root->lazy;
+            child->max += root->lazy;
+            child->value += root->lazy;
         }
     }
+    root->lazy = 0;
+}
 
-    Node* merge(Node* l, Node* r) {
-        if (!l) return r;
-        if (!r) return l;
-        if (l->y > r->y) {
-            l->r = merge(l->r, r);
-            l->recalc();
-            return l;
-        } else {
-            r->l = merge(l, r->l);
-            r->recalc();
-            return r;
+void recalc(Treap *root) {
+    if (root == NULL) return;
+    root->size = 1;
+    root->max = root->value;
+    for (auto child: root->child) {
+        if (child != NULL) {
+            root->size += child->size;
+            root->max = max(root->max, child->max);
         }
     }
+}
 
-    Node* insert(Node* t, Node* n, int pos) {
-        auto pa = split(t, pos);
-        return merge(merge(pa.first, n), pa.second);
+
+// ----------------------------------------
+// DON'T TOUCH THIS 
+
+Treap* merge(Treap* l, Treap* r) {
+    if (l == NULL) return r;
+    if (r == NULL) return l;
+    down(l); down(r);
+    if (l->priority < r->priority) {
+        l->child[1] = merge(l->child[1], r);
+        recalc(l);
+        return l;
+    }
+    else {
+        r->child[0] = merge(l, r->child[0]);
+        recalc(r);
+        return r;
+    }
+}
+
+array<Treap*, 2> split(Treap* root, int nLeft) {
+    if (root == NULL) return {NULL, NULL};
+    down(root);
+    if (size(root->child[0]) >= nLeft) {
+        array<Treap*, 2> leftRes = split(root->child[0], nLeft);
+        root->child[0] = leftRes[1];
+        recalc(root);
+        return {leftRes[0], root};
+    }
+    else {
+        nLeft -= size(root->child[0]) + 1;
+        array<Treap*, 2> rightRes = split(root->child[1], nLeft);
+        root->child[1] = rightRes[0];
+        recalc(root);
+        return {root, rightRes[1]};
     }
 
-    // Example application: move the range [l, r] to index k
-    void moveRange(Node*& t, int l, int r, int k) {
-        r++;
-        Node *a, *b, *c;
-        tie(a,b) = split(t, l); tie(b,c) = split(b, r - l);
-        if (k <= l) t = merge(insert(a, b, k), c);
-        else t = merge(a, insert(c, b, k - r));
-    }
+    return {NULL, NULL};
+}
 
+// -----------------------------------------------------
+
+void inOrder(Treap* root) {
+    if (root == NULL) return;
+    down(root);
+    inOrder(root->child[0]);
+    cout << root->value << " ";
+    inOrder(root->child[1]);
+}
+
+void update(Treap* &root, int l, int r, int val) {
+    auto a = split(root, r);
+    auto b = split(a[0], l - 1);
+    b[1]->lazy += val;
+    b[1]->max += val;
+    b[1]->value += val;
+    Treap* tmp = merge(b[0], b[1]);
+    root = merge(tmp, a[1]);
+}
+
+long long getMax(Treap* &root, int l, int r) {
+    auto a = split(root, r);
+    auto b = split(a[0], l - 1);
+    long long res = b[1]->max;
+    Treap* tmp = merge(b[0], b[1]);
+    root = merge(tmp, a[1]);
+    return res;
 }

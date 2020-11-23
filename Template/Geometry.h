@@ -30,6 +30,8 @@ struct Point {
 long double cross(const Point& A, const Point& B) {
     return A.x * B.y - A.y * B.x;
 }
+
+// cross(CA, CB) < 0: CA -> turns right -> CB
 long double cross(const Point&A, const Point& B, const Point& C) {
     return cross(A - C, B - C);
 }

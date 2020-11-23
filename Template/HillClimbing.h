@@ -3,6 +3,7 @@
 // if there is flat f(i) += i * EPS
 // make sure to change radius /= 2 in double version
 // return the critical point
+// remember to define function for out of range
 int climb(function<double(int)> f, int start, int radius, bool findMin) {
     auto better = [&](double A, double B) {
         if (findMin) return A < B;
@@ -30,4 +31,16 @@ int climb(function<double(int)> f, int start, int radius, bool findMin) {
         }
     }
     return x;    
+}
+
+
+// for example, to get min in range [0, maxVal]
+int getMin(function<double(int)> f, int maxVal) {
+    int numInterval = 10;
+    for (int i = 0; i < numInterval; i++) {
+        int start = maxVal / numInterval * i;
+        long long val = climb(f, start, maxVal / numInterval, true);
+        res = min(res, f(val)); 
+    }
+    return res;
 }
