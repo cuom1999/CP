@@ -1,13 +1,24 @@
-
 struct LCA {
-    vector<vector<int>> adj, p;
+    vector<vector<int>> adj;
+    vector<vector<int>> p;
     vector<int> h; // h[1] = 1
     int n, logn, root = 1;
 
-    LCA(int n, const vector<vector<int>>& adj): n(n), adj(adj) {
+    LCA(int n): n(n) {
         while ((1 << logn) <= n) logn++;
+        adj.resize(n + 1);
         p = vector<vector<int>>(n + 1, vector<int>(logn + 1));
-        h = vector<int>(n + 1);
+        h.resize(n + 1);
+    }
+
+    // adding an edge to undirected tree, 1-based index
+    void addEdge(int u, int v) {
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    // run this after adding all edges
+    void setup() {
         dfs(1, 0);
         initJumps();
     }
@@ -16,7 +27,9 @@ struct LCA {
         h[u] = h[par] + 1;
         p[u][0] = par;
         for (auto i: adj[u]) {
-            if (i != par) dfs(i, u);
+            if (i != par) {
+                dfs(i, u);
+            }
         }
     }
 
@@ -51,4 +64,3 @@ struct LCA {
     }
 
 };
-
