@@ -1,95 +1,75 @@
-#include <bits/stdc++.h>
+// Usage:
+// Constructor: PSTNode* root = new PSTNode();
+// Update: newRoot = root->update(1, n, a[i]);
+// Query: root->query(1, n, u, v);
 
-#define ld long double
-#define sf scanf
-#define pf printf
-#define pb push_back
-#define mp make_pair
-#define PI ( acos(-1.0) )
-#define IN freopen("input.txt","r",stdin)
-#define OUT freopen("output.txt","w",stdout)
-#define FOR(i,a,b) for(int i=a ; i<=b ; i++)
-#define FORD(i,a,b) for(int i=a ; i>=b ; i--)
-#define INF 1000000000
-#define ll long long int
-#define eps (1e-8)
-#define sq(x) ( (x)*(x) )
-#define all(x) x.begin(),x.end()
-#define flog2(n) 64 - __builtin_clzll(n) - 1
+struct PSTNode {
+    PSTNode* left;
+    PSTNode* right;
+    int size;
 
-using namespace std;
+    // don't use this! only for tmpNode
+    PSTNode(bool initialize) {
+        size = 0;
+        left = right = this;
+    }
+    PSTNode(); // use this
 
-typedef pair < int, int > II;
-typedef pair < ll, ll > pll;
+    PSTNode* update(int l, int r, int i) {
+        if (l == r) {
+            PSTNode* node = new PSTNode();
+            node->size = this->size + 1;
+            return node;
+        }
+        
+        int mid = (l + r) / 2;
 
-int ver[200005];
-int nVer;
-int nNode;
+        PSTNode* newNode = new PSTNode();
+        newNode->left = left; newNode->right = right;
 
-struct node{
-    int Min,Max;
-    int left,right;
-}st[50005*4*30];
+        if (i <= mid) {
+            newNode->left = left->update(l, mid, i);
+        }
+        else {
+            newNode->right = right->update(mid + 1, r, i);
+        }
 
-void refine (int id){
-    st[id].Min=min(st[st[id].left].Min,st[st[id].right].Min);
-    st[id].Max=max(st[st[id].left].Max,st[st[id].right].Max);
+        newNode->combine();
+        return newNode;
+    }
+    void combine() {
+        size = left->size + right->size;
+    }
+
+    int query(int l, int r, int u, int v) {
+        if (v < l || r < u) return 0;
+        
+        if (u <= l && r <= v) {
+            return size;
+        }
+        int mid = (l + r) / 2;
+        return left->query(l, mid, u, v) + right->query(mid + 1, r, u, v);
+    }
+};
+
+PSTNode* tmpNode = new PSTNode(true);
+PSTNode::PSTNode() {
+    left = right = tmpNode;
+    size = 0;
 }
 
-int update(int oldId, int l, int r, int u, int x){
-    if (l==r){
-        ++nNode;
-        st[nNode].Min=st[nNode].Max=x;
-        st[nNode].left=st[nNode].right=0;
-        return nNode;
+// find the kth number in [u, v], a = PST[u - 1], b = PST[v]
+int getKth(PSTNode* pstA, PSTNode* pstB, int l, int r, int kth) {
+    if (l == r) {
+        return l;
     }
-    int mid=(l+r)/2;
-    int cur=++nNode;
+    int mid = (l + r) / 2;
 
-    if (u<=mid){
-        st[cur].left=update(st[oldId].left, l, mid, u, x);
-        st[cur].right=st[oldId].right;
+    int val = pstB->left->size;
+    val -= pstA->left->size;
+
+    if (val >= kth) {
+        return getKth(pstA->left, pstB->left, l, mid, kth);
     }
-    else{
-        st[cur].right=update(st[oldId].right, mid+1, r, u, x);
-        st[cur].left=st[oldId].left;
-    }
-    refine (cur);
-    return cur;
-}
-
-II get(int id, int l, int r, int u, int v){
-    if (v<l || r<u) return II(0,INF);
-    if (u<=l && r<=v){
-        return II(st[id].Max,st[id].Min);
-    }
-    int mid=(l+r)/2;
-    II A=get(st[id].left,l, mid, u,v);
-    II B=get(st[id].right,mid+1,r,u,v);
-    return II(max(A.first,B.first),min(A.second,B.second));
-}
-
-int main()
-{IN;
-    ios::sync_with_stdio(0);
-    cin.tie(NULL);
-
-    ll n,q;
-    cin>>n>>q;
-
-    FOR (i,1,n) {
-        int x;
-        cin>>x;
-        ++nVer;
-        ver[nVer]=update(ver[nVer-1],1,n,i,x);
-    }
-    FOR (i,1,q){
-        int u,v;
-        cin>>u>>v;
-        II uu=get(ver[nVer],1,n,u,v);
-        cout<<uu.first-uu.second<<endl;
-    }
-
-
-         return 0;
+    return getKth(pstA->right, pstB->right, mid + 1, r, kth - val);
 }
