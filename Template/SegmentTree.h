@@ -1,7 +1,11 @@
 struct SegmentTree {
     struct Node {
         long long sum = 0;    
-    } st[400005];
+    };
+    vector<Node> st;
+    SegmentTree(int n) {
+        st.resize(4 * n);
+    }
 
     void merge(Node& a, Node& b, Node& c) {
         a.sum = b.sum + c.sum;
