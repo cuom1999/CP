@@ -62,5 +62,14 @@ struct LCA {
 
         return u;
     }
-
+    
+    int getKthAnc(int u, int k) {
+        for (int i = logn; i >= 0; i--) {
+            if (k >= (1 << i)) {
+                k -= (1 << i);
+                u = p[u][i];
+            }
+        }
+        return u;
+    }
 };
