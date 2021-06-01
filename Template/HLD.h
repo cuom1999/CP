@@ -1,77 +1,90 @@
+// Usage:
+// insert LCA codes above, can use all variables in LCA
+// addEdge then call setup
+// order: the vertex ordering in HLD
+// decompose(u, v): decompose path u-v to O(log) intervals in `order`
 
-/// Remember dfs and hld first
+struct HLD: public LCA {
+    int nChain = 1;
+    vector<int> sub, chainHead, chainInd, orderPos, order;
 
-const ll N=100005;
-
-int nChain=1, chainHead[N], chainInd[N],p[N][20],sub[N],pos[N],h[N];
-int nBase;
-int n;
-vector<int> v[N];
-vector<int> Base;
-
-void dfs(int a, int par){
-    sub[a]=1;
-    for (auto i:v[a]){
-        if (i==par) continue;
-        p[i][0]=a;
-        h[i]=h[a]+1;
-        dfs(i,a);
-        sub[a]+=sub[i];
+    HLD(int n): LCA(n) {
+        sub.resize(n + 1);
+        chainHead.resize(n + 1);
+        chainInd.resize(n + 1);
+        orderPos.resize(n + 1);
     }
-}
 
-void hld(int a, int par){
-    if (chainHead[nChain]==0) chainHead[nChain]=a;
-    chainInd[a]=nChain;
-    pos[a]=++nBase;
-    Base.pb(a);
-
-    int mx=-1;
-    for (auto i:v[a]){
-        if (i!=par){
-            if (mx==-1 || sub[mx]<sub[i]) mx=i;
+    void dfsSub(int u, int par) {
+        sub[u] = 1;
+        for (auto i: adj[u]) {
+            if (i != par) {
+                dfsSub(i, u);
+                sub[u] += sub[i];
+            }
         }
     }
-    if (mx>-1) hld(mx,a);
-    for (auto i:v[a]){
-        if (i!=par && i!=mx){
+
+    void runHLD(int u, int par) {
+        if (chainHead[nChain] == 0) chainHead[nChain] = u;
+        chainInd[u] = nChain;
+        order.push_back(u);
+        orderPos[u] = order.size();
+
+        int maxChild = -1;
+        for (auto i: adj[u]) {
+            if (i == par) continue;
+            if (maxChild == -1 || sub[maxChild] < sub[i]) {
+                maxChild = i;
+            }
+        }
+
+        if (maxChild != -1) {
+            runHLD(maxChild, u);
+        }
+
+        for (auto i: adj[u]) {
+            if (i == par || i == maxChild) continue;
             nChain++;
-            hld(i,a);
+            runHLD(i, u);
         }
     }
-}
 
-int query(int a, int u){ // u la LCA cua a
-    int ac=chainInd[a];
-    int uc=chainInd[u];
-    int res=0;
-    while (1){
-        if (uc==ac){
-            res=max(res,get(1,1,n,pos[u],pos[a]));
-            break;
+    // run this after adding all edges
+    void setup(int root = 1) {
+        dfs(root, 0);
+        dfsSub(root, 0);
+        runHLD(root, 0);
+        initJumps();
+    }
+
+
+    // decompose path u-par into log intervals in order
+    // par is an ancestor of u
+    vector<array<int, 2>> decomposePar(int u, int par) {
+        int uChain = chainInd[u];
+        vector<array<int, 2>> res;
+        while (true) {
+            if (uChain == chainInd[par]) {
+                res.push_back({orderPos[par], orderPos[u]});
+                break;
+            }
+            res.push_back({orderPos[chainHead[uChain]], orderPos[u]});
+            u = p[chainHead[uChain]][0];
+            uChain = chainInd[u];
         }
-        res=max(res,get(1,1,n,pos[chainHead[ac]],pos[a]));
-        a=p[chainHead[ac]][0];
-        ac=chainInd[a];
+        return res;
     }
-    return res;
-}
 
-void init(){
-    FOR (i,1,18){
-        FOR (j,1,n){
-            p[j][i]=p[p[j][i-1]][i-1];
-        }
+    // decompose path u-v into log intervals
+    vector<array<int, 2>> decompose(int u, int v) {
+        int l = lca(u, v);
+        if (l == u) return decomposePar(v, l);
+        if (l == v) return decomposePar(u, l);
+
+        auto res1 = decomposePar(u, l);
+        auto res2 = decomposePar(v, getKthAnc(v, h[v] - h[l] - 1));
+        res2.insert(res2.end(), res1.begin(), res1.end());
+        return res2;
     }
-}
-
-int LCA(int u, int v){
-    if (h[v]<h[u]) FORD(i,17,0) if (h[p[u][i]]>=h[v]) u=p[u][i];
-    if (h[u]<h[v]) FORD(i,17,0) if (h[p[v][i]]>=h[u]) v=p[v][i];
-
-    FORD(i,17,0)if (p[u][i]!=p[v][i]) {u=p[u][i]; v=p[v][i];}
-    while (u!=v){
-        u=p[u][0]; v=p[v][0];
-    }
-    return u;
-}
+};
