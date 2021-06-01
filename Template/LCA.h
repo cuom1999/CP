@@ -16,13 +16,7 @@ struct LCA {
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
-
-    // run this after adding all edges
-    void setup(int root = 1) {
-        dfs(root, 0);
-        initJumps();
-    }
-
+    
     void dfs(int u, int par) {
         h[u] = h[par] + 1;
         p[u][0] = par;
@@ -40,6 +34,13 @@ struct LCA {
             }
         }    
     }
+
+    // run this after adding all edges
+    void setup(int root = 1) {
+        dfs(root, 0);
+        initJumps();
+    }
+    
     int lca(int u, int v){
         if (h[u] < h[v]) swap(u, v);
         if (h[v] < h[u]) {
@@ -54,12 +55,7 @@ struct LCA {
                 v = p[v][i];
             }
         }
-        
-        while (u != v){
-            u = p[u][0]; 
-            v = p[v][0];
-        }
-
+        if (u != v) u = p[u][0];
         return u;
     }
     
