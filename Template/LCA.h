@@ -2,7 +2,7 @@ struct LCA {
     vector<vector<int>> adj;
     vector<vector<int>> p;
     vector<int> h; // h[1] = 1
-    int n, logn, root = 1;
+    int n, logn = 0, root = 1;
 
     LCA(int n): n(n) {
         while ((1 << logn) <= n) logn++;
