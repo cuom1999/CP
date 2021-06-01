@@ -18,8 +18,8 @@ struct LCA {
     }
 
     // run this after adding all edges
-    void setup() {
-        dfs(1, 0);
+    void setup(int root = 1) {
+        dfs(root, 0);
         initJumps();
     }
 
