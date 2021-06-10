@@ -1,9 +1,9 @@
 // return the minimum value
-// add line in increasing order
+// add line in increasing order of a
 
-// Min-decreasing order: add (-x, y)  + query(-a)
-// Max-decreasing order: add (-x, -y) + query(a)
-// Max-increasing order: add (x, -y)  + query(-a)
+// Min-decreasing order: add(-a, b)  ___  min = query(-x)
+// Max-decreasing order: add(-a, -b) ___  max = -query(x)
+// Max-increasing order: add(a, -b)  ___  max = -query(-x)
 
 struct Point {
     long long x, y;
