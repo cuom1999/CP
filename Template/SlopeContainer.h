@@ -1,3 +1,9 @@
+// Usage:
+// f(x) is a line container
+// add(u)          :   f(x) += |x - u| for all x
+// updateMin(a, b) :   f(x) = min(f(i)), x + a <= i <= x + b
+// res             :   min f(x)
+
 struct SlopeContainer {
     priority_queue<long long> maxHeap;
     priority_queue<long long, vector<long long>, greater<long long>> minHeap;
